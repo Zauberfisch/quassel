@@ -38,6 +38,7 @@ class BufferViewConfig : public SyncableObject
     Q_PROPERTY(bool hideInactiveNetworks READ hideInactiveNetworks WRITE setHideInactiveNetworks)
     Q_PROPERTY(bool disableDecoration READ disableDecoration WRITE setDisableDecoration)
     Q_PROPERTY(int allowedBufferTypes READ allowedBufferTypes WRITE setAllowedBufferTypes)
+    Q_PROPERTY(int sortMethod READ sortMethod WRITE setSortMethod)
     Q_PROPERTY(int minimumActivity READ minimumActivity WRITE setMinimumActivity)
     Q_PROPERTY(bool showSearch READ showSearch WRITE setShowSearch)
 
@@ -67,6 +68,9 @@ public slots:
 
     inline int allowedBufferTypes() const { return _allowedBufferTypes; }
     void setAllowedBufferTypes(int bufferTypes);
+
+    inline int sortMethod() const { return _sortMethod; }
+    void setSortMethod(int method);
 
     inline int minimumActivity() const { return _minimumActivity; }
     void setMinimumActivity(int activity);
@@ -138,6 +142,7 @@ private:
     bool _hideInactiveNetworks;
     bool _disableDecoration;
     int _allowedBufferTypes;
+    int _sortMethod;
     int _minimumActivity;
     bool _showSearch;
     QList<BufferId> _buffers;

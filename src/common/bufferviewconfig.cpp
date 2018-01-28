@@ -32,6 +32,7 @@ BufferViewConfig::BufferViewConfig(int bufferViewId, QObject *parent)
     _hideInactiveNetworks(false),
     _disableDecoration(false),
     _allowedBufferTypes(BufferInfo::StatusBuffer | BufferInfo::ChannelBuffer | BufferInfo::QueryBuffer | BufferInfo::GroupBuffer),
+    _sortMethod(0),
     _minimumActivity(0),
     _showSearch(false)
 {
@@ -110,6 +111,17 @@ void BufferViewConfig::setAllowedBufferTypes(int bufferTypes)
 
     _allowedBufferTypes = bufferTypes;
     SYNC(ARG(bufferTypes))
+    emit configChanged();
+}
+
+
+void BufferViewConfig::setSortMethod(int method)
+{
+    if (_sortMethod == method)
+        return;
+
+    _sortMethod = method;
+    SYNC(ARG(method))
     emit configChanged();
 }
 

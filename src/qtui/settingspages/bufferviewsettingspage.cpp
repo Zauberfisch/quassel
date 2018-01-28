@@ -66,6 +66,7 @@ BufferViewSettingsPage::BufferViewSettingsPage(QWidget *parent)
     connect(ui.hideInactiveBuffers, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
     connect(ui.hideInactiveNetworks, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
     connect(ui.networkSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
+    connect(ui.sortMethodSelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.minimumActivitySelector, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetHasChanged()));
     connect(ui.showSearch, SIGNAL(clicked(bool)), this, SLOT(widgetHasChanged()));
 
@@ -453,6 +454,14 @@ void BufferViewSettingsPage::loadConfig(BufferViewConfig *config)
     }
     ui.networkSelector->setCurrentIndex(networkIndex);
 
+    int sortMethodIndex = 0;
+    int sortMethod = config->sortMethod();
+    while (sortMethod) {
+        sortMethodIndex++;
+        sortMethod = sortMethod >> 1;
+    }
+    ui.sortMethodSelector->setCurrentIndex(sortMethodIndex);
+
     int activityIndex = 0;
     int minimumActivity = config->minimumActivity();
     while (minimumActivity) {
@@ -487,6 +496,11 @@ void BufferViewSettingsPage::saveConfig(BufferViewConfig *config)
     config->setHideInactiveNetworks(ui.hideInactiveNetworks->isChecked());
     config->setNetworkId(ui.networkSelector->itemData(ui.networkSelector->currentIndex()).value<NetworkId>());
     config->setShowSearch(ui.showSearch->isChecked());
+
+    int sortMethod = 0;
+    if (ui.sortMethodSelector->currentIndex() > 0)
+        sortMethod = 1 << (ui.sortMethodSelector->currentIndex() - 1);
+    config->setSortMethod(sortMethod);
 
     int minimumActivity = 0;
     if (ui.minimumActivitySelector->currentIndex() > 0)
